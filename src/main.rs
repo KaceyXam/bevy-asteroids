@@ -1,7 +1,9 @@
+use asteroids::AsteroidPlugin;
 use bevy::prelude::*;
 use bevy::render::{mesh::Indices, render_resource::PrimitiveTopology};
 use player::PlayerPlugin;
 
+mod asteroids;
 mod player;
 
 fn main() {
@@ -14,6 +16,7 @@ fn main() {
             ..default()
         }))
         .add_plugin(PlayerPlugin)
+        .add_plugin(AsteroidPlugin)
         .add_startup_system(setup_camera)
         .run();
 }

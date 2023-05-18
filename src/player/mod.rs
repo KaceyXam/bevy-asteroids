@@ -22,7 +22,7 @@ fn spawn_player(
     commands
         .spawn(MaterialMesh2dBundle {
             mesh: meshes.add(crate::create_triangle()).into(),
-            transform: Transform::default().with_scale(Vec3::splat(16.)),
+            transform: Transform::from_xyz(0.0, 0.0, 10.0).with_scale(Vec3::splat(16.)),
             material: materials.add(ColorMaterial::from(Color::WHITE)),
             ..default()
         })
