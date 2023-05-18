@@ -37,11 +37,10 @@ fn player_movement(
 ) {
     let window = window_query.get_single().unwrap();
     if let Ok((mut player_transform, mut player)) = player_query.get_single_mut() {
-        let mut new_speed = player.speed;
-        new_speed += if key.pressed(KeyCode::Up) {
-            1.0f32
+        let new_speed = if key.pressed(KeyCode::Up) {
+            player.speed + time.delta_seconds() * 1000f32
         } else {
-            -2.5f32
+            player.speed * 0.98
         };
         player.speed = new_speed.clamp(0.0, 750.0);
 
@@ -53,11 +52,19 @@ fn player_movement(
         }
 
         let movement = player_transform.rotation * Vec3::Y;
-        player_transform.translation +=
-            player.speed.clamp(0.0, 50.0) * time.delta_seconds() * movement;
+        player_transform.translation += player.speed * time.delta_seconds() * movement;
 
-        if player_transform.translation.x <= -window.width() / 2.0 {
+        if player_transform.translation.x <= -window.width() / 2.0 - 10.0 {
             player_transform.translation.x = window.width() / 2.0;
+        }
+        if player_transform.translation.x >= window.width() / 2.0 + 10.0 {
+            player_transform.translation.x = -window.width() / 2.0;
+        }
+        if player_transform.translation.y <= -window.height() / 2.0 - 10.0 {
+            player_transform.translation.y = window.height() / 2.0;
+        }
+        if player_transform.translation.y >= window.height() / 2.0 + 10.0 {
+            player_transform.translation.y = -window.height() / 2.0;
         }
     }
 }
