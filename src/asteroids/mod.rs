@@ -14,7 +14,7 @@ const ASTEROID_SPEED: f32 = 50f32;
 
 #[derive(Component)]
 pub struct Asteroid {
-    size: f32,
+    pub size: f32,
     vel: Vec2,
 }
 

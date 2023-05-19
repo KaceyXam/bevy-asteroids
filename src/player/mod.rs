@@ -1,10 +1,13 @@
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
+use crate::asteroids::Asteroid;
+
 pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_startup_system(spawn_player)
+            .add_system(player_collide)
             .add_system(player_movement);
     }
 }
@@ -65,6 +68,23 @@ fn player_movement(
         }
         if player_transform.translation.y >= window.height() / 2.0 + 10.0 {
             player_transform.translation.y = -window.height() / 2.0;
+        }
+    }
+}
+
+fn player_collide(
+    mut commands: Commands,
+    asteroid_query: Query<(&Asteroid, &Transform)>,
+    mut player_query: Query<(&mut Transform, Entity), (With<Player>, Without<Asteroid>)>,
+) {
+    if let Ok((player_transform, player)) = player_query.get_single_mut() {
+        for (asteroid, asteroid_transform) in asteroid_query.iter() {
+            let change_x = player_transform.translation.x - asteroid_transform.translation.x;
+            let change_y = player_transform.translation.y - asteroid_transform.translation.y;
+            let distance = (change_x * change_x + change_y * change_y).sqrt();
+            if distance <= asteroid.size / 2.0 {
+                commands.entity(player).despawn();
+            }
         }
     }
 }
