@@ -11,6 +11,7 @@ impl Plugin for AsteroidPlugin {
 }
 
 const ASTEROID_SPEED: f32 = 50f32;
+const NO_SPAWN_RADIUS: f32 = 150f32;
 
 #[derive(Component)]
 pub struct Asteroid {
@@ -32,10 +33,18 @@ fn spawn_asteroid(
             rand::thread_rng().gen_range(-1.0..1.0),
         );
 
-        let pos = Vec2::new(
+        let mut pos = Vec2::new(
             rand::thread_rng().gen_range(-window.width() / 2.0..window.width() / 2.0),
             rand::thread_rng().gen_range(-window.height() / 2.0..window.height() / 2.0),
         );
+
+        while pos.distance(Vec2::ZERO) < NO_SPAWN_RADIUS {
+            pos = Vec2::new(
+                rand::thread_rng().gen_range(-window.width() / 2.0..window.width() / 2.0),
+                rand::thread_rng().gen_range(-window.height() / 2.0..window.height() / 2.0),
+            );
+        }
+
         commands.spawn(create_asteroid(&mut meshes, &mut materials, size, vel, pos));
     }
 }
