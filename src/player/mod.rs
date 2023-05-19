@@ -42,7 +42,7 @@ fn player_movement(
         } else {
             player.speed * 0.98
         };
-        player.speed = new_speed.clamp(0.0, 750.0);
+        player.speed = new_speed.clamp(0.0, 250.0);
 
         if key.pressed(KeyCode::Left) {
             player_transform.rotate_z(5.0 * time.delta_seconds());
