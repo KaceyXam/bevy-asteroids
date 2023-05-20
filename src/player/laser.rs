@@ -6,7 +6,9 @@ use super::Player;
 const LASER_SPEED: f32 = 1000f32;
 
 #[derive(Component)]
-pub struct Laser;
+pub struct Laser {
+    pub dir: Vec3,
+}
 
 pub fn spawn_laser(
     mut commands: Commands,
@@ -17,6 +19,7 @@ pub fn spawn_laser(
 ) {
     if let Ok(player) = player_query.get_single() {
         if key.just_pressed(KeyCode::Space) {
+            let dir = player.rotation * Vec3::Y;
             commands
                 .spawn(MaterialMesh2dBundle {
                     mesh: meshes
@@ -29,7 +32,7 @@ pub fn spawn_laser(
                     material: materials.add(ColorMaterial::from(Color::WHITE)),
                     ..default()
                 })
-                .insert(Laser);
+                .insert(Laser { dir });
         }
     }
 }

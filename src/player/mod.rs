@@ -3,7 +3,7 @@ use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
 use self::laser::*;
 
-mod laser;
+pub mod laser;
 
 pub struct PlayerPlugin;
 
