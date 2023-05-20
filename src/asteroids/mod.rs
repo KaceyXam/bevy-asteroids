@@ -27,7 +27,7 @@ fn spawn_asteroid(
 ) {
     let window = window_query.get_single().unwrap();
     for _ in 0..=10 {
-        let size = rand::thread_rng().gen::<f32>() * 200f32;
+        let size = (rand::thread_rng().gen::<f32>() * 200f32).clamp(50.0, 200.0);
         let vel = Vec2::new(
             rand::thread_rng().gen_range(-1.0..1.0),
             rand::thread_rng().gen_range(-1.0..1.0),
