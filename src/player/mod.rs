@@ -1,6 +1,9 @@
+use crate::asteroids::Asteroid;
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
-use crate::asteroids::Asteroid;
+use self::laser::*;
+
+mod laser;
 
 pub struct PlayerPlugin;
 
@@ -8,12 +11,14 @@ impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_startup_system(spawn_player)
             .add_system(player_collide)
+            .add_system(spawn_laser)
+            .add_system(move_laser)
             .add_system(player_movement);
     }
 }
 
 #[derive(Component)]
-struct Player {
+pub struct Player {
     speed: f32,
 }
 
